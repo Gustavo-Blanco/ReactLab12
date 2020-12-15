@@ -33,3 +33,24 @@ def guardar(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def listar_prestamos(request):
+    prestamo = Prestamo.objects.all()
+    serializer = PrestamoSerializer(prestamo, many=True)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def crear_prestamo(request):
+    print("Datos de prueba :: ",request.data['id'])
+    usuario = Usuario.objects.get(pk=int(request.data['usuario']))
+    libro = Libro.objects.get(pk=int(request.data['libro']))
+    request.data['usuario'] = usuario
+    request.data['libro'] = libro
+    # print()
+    print("Datos de prueba :: ",request.data)
+    serializer = PrestamoSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

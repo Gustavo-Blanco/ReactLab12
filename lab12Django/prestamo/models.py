@@ -16,7 +16,7 @@ class Libro(models.Model):
     isbn = models.CharField(max_length=30)
     editorial = models.CharField(max_length=60)
     num_pags = models.SmallIntegerField()
-    autor = models.ForeignKey(Autor, on_delete=models.CASCADE)
+    autor = models.ForeignKey(Autor, related_name='libros',on_delete=models.CASCADE)
 
     def __str__(self):
         return self.titulo
@@ -38,4 +38,4 @@ class Prestamo(models.Model):
     fecha_devolucion = models.DateTimeField()
 
     def __str__(self):
-        return self.fecha_prestamo
+        return str(self.fecha_prestamo)
